@@ -95,18 +95,18 @@ Un decorador es una función que envuelve a otra. Necesitamos así pues:
  
     def decorador(f):
         return f
-        
+ 
  ----
  
  ``decorador`` es una función que devuelve el valor que se le pasa por argumento.
  
- .. code-block::
+.. code-block::
  
     num = 4
     num = decorador(num)
     # ¿Esto es cierto, no?
     assert num == 4
-    
+
 ----
 
 Así pues, pasará lo mismo al introducir una función.
@@ -117,7 +117,7 @@ Así pues, pasará lo mismo al introducir una función.
     hello()  # Esto sigue imprimiendo "Hello world!"
     
 *No obstante, esto no resulta muy útil*
-        
+
 ----
 
 Uso impráctico #2: volver loco a tus compañeros
@@ -138,7 +138,7 @@ la función **no** haga lo esperado...
             return inquisition
         else:
             return f
-                
+
 ----
 
 .. code-block::
