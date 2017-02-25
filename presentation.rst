@@ -263,6 +263,21 @@ En este caso, que el usuario sea un moderador.
         
 ----
 
+Ejemplo práctico: sin afectar función
+-------------------------------------
+
+.. code-block::
+
+    def ex_time(f):
+        def fn_wrap(*args, **kwargs)
+            t0 = time.time()
+            output = f(*args, **kwargs)
+            print("La función tardó {} segundos".format(time.time() - t0))
+            return output
+        return fn_wrap
+
+----
+
 Conclusión tipos decoradores
 ============================
 
