@@ -133,9 +133,7 @@ la función **no** haga lo esperado...
 
     def crazy(f):
         if choice([True, False]):
-            def inquisition():
-                print("Nobody expects the spanish inquisition!")
-            return inquisition
+            return print("Nobody expects the spanish inquisition!")
         else:
             return f
 
