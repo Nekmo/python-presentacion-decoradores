@@ -263,6 +263,19 @@ En este caso, que el usuario sea un moderador.
         
 ----
 
+Sólo con esto, ya nos evitamos código como el siguiente en nuestras funciones::
+
+.. code-block::
+
+    def my_view(request):
+        if not request.user.is_moderator():
+            raise PermissionDenied
+        # ....
+        
+Y además, podemos aplicarlo sobre funciones en las que no tenemos acceso al código.
+
+----
+
 Ejemplo práctico: sin afectar función
 -------------------------------------
 
