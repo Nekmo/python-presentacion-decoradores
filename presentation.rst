@@ -184,9 +184,7 @@ El decorador sólo se está interponiendo en **la definición** de la función, 
     def crazy(f):
         def ejecucion():
             if choice([True, False]):
-                def inquisicion():
-                    print("Nobody expects the spanish inquisition!")
-                return inquisicion()
+                return print("Nobody expects the spanish inquisition!")
             else:
                 return f()
         return ejecucion
