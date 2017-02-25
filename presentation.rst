@@ -91,7 +91,7 @@ Un decorador es una función que envuelve a otra. Necesitamos así pues:
  
  Y una función (decorador) que envolverá nuestra otra función (hello):
  
- .. code-block::
+.. code-block::
  
     def decorador(f):
         return f
@@ -161,6 +161,43 @@ O usado el decorador de la forma habitual:
     def hello():
         print("Hello world!")
     # Hello o inquisión. Siempre lo mismo.
+    hello()
+
+----
+
+Mejorando nuestra función inútil (closure)
+==========================================
+El decorador ``crazy`` cambia de forma constante el comportamiento de la función. Si se establece en un comienzo que la función ``hello`` debe devolver "Hello World!", lo devolverá siempre. Y lo mismo con *inquisición*.
+
+Ahora queremos que cambie por **cada ejecución de la función** (``hello``).
+
+----
+
+¿Cómo se hace?
+--------------
+El decorador sólo se está interponiendo en **la definición** de la función, lo cual hace que sólo cambie su comportamiento cuando se establece, pero no **por cada ejecución**. Afectaremos también a **su ejecución**.
+
+----
+
+.. code-block::
+
+    def crazy(f):
+        def ejecucion():
+            if choice([True, False]):
+                def inquisicion():
+                    print("Nobody expects the spanish inquisition!")
+                return inquisicion()
+            else:
+                return f()
+        return ejecucion
+        
+----
+
+.. code-block::
+
+    hello = crazy(hello)
+    # El 50% de las veces que **se ejecuta** la función, será
+    # más divertido
     hello()
 
 ----
