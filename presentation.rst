@@ -89,7 +89,7 @@ Un decorador es una función que envuelve a otra. Necesitamos así pues:
         
  ----
  
- Y una función (decorador) que envolverá nuestra otra función (hello):
+ **Y una función (decorador)** que envolverá nuestra otra función (hello):
  
 .. code-block::
  
@@ -117,7 +117,7 @@ Así pues, pasará lo mismo al introducir una función.
     hello()  # Esto sigue imprimiendo "Hello world!"
     
 *No obstante, esto no resulta muy útil*
-    
+        
 ----
 
 Uso impráctico #2: volver loco a tus compañeros
@@ -160,7 +160,7 @@ O usado el decorador de la forma habitual:
     @crazy
     def hello():
         print("Hello world!")
-    # Hello o inquisión. Siempre lo mismo.
+    # Imprime Hello o inquisión. Siempre lo mismo.
     hello()
 
 ----
@@ -193,6 +193,10 @@ El decorador sólo se está interponiendo en **la definición** de la función, 
         
 ----
 
+Esta función dentro de un decorador, se denomina ``closure``, y permite afectar al comportamiento de la función cuando **se ejecuta**.
+        
+----
+
 .. code-block::
 
     hello = crazy(hello)
@@ -201,4 +205,101 @@ El decorador sólo se está interponiendo en **la definición** de la función, 
     hello()
 
 ----
+
+Ejemplo práctico: cambiar output
+--------------------------------
+El siguiente decorador hará que la salida de la función decoradora, se encuentre envuelta entre ``<em></em>``
+
+.. code-block::
+
+    def goodbye():
+        return "Bye! Bye!"
+
+    def em(f):
+        def ejecucion(*args, **kwargs):
+            output = f(*args, **kwargs)
+            return '<em>{}</em>'.format(output)
+        return ejecucion
+        
+    hello = em(hello)
+    hello()
+    # Devuelve: <em>Bye! Bye!</em>
+    
+----
+    
+Ejemplo práctico: cambiar entrada
+---------------------------------
+El siguiente ejemplo hace que la función decorada, siempre reciba números,
+aunque estén como strings.
+
+.. code-block::
+
+    def parse_ints(f):
+        def fn_wrap(*args):
+            args = [int(a) for a in args]
+            return f(**args)
+        return fn_wrap
+    
+    my_fun = parse_ints(my_fun)
+    my_fun('3', 4, '5')
+    # my_fun recibe: 3, 4, 5.
+    
+----
+
+Ejemplo práctico: condicionar función
+-------------------------------------
+Esta decorador restringe la ejecución del código en función a la entrada.
+En este caso, que el usuario sea un moderador.
+
+.. code-block::
+
+    def is_moderator(f):
+        def fn_wrap(request, *args, **kwargs):
+            if request.user.is_moderator():
+                return f(request, *args, **kwargs)
+            else:
+                raise PermissionDenied
+        return fn_wrap
+        
+----
+
+Conclusión tipos decoradores
+============================
+
+* Los **decoradores simples** de nuestro primer decorador, afectan únicamente a la creación de la función.
+* Los **decoradores con closure** (una función dentro), afectan a la ejecución de la función.
+
+----
+
+¿Qué uso pueden tener los simples?
+==================================
+Son menos empleados, pero permiten entre otras cosas *registrar* las funciones. Por ejemplo, para guardar las funciones de una API.
+
+.. code-block::
+
+    routes = set()
+    
+    def route(f)
+        routes.add(f)
+        return f
+        
+    @route
+    def my_fun():
+        ...
+        
+    # Ahora routes contiene my_fun.
+    
+----
+
+Recibiendo parámetros en los decoradores
+========================================
+
+.. code-block::
+
+    def tag(tag_name):
+        def wrap(f):
+            def wrapped(*args, **kwargs):
+                return '<{0}>{1}</{0}>'.format(tag_name, f(*args, **kwargs))
+            return wrapped
+        return wrap
 
